@@ -14,7 +14,8 @@ import {
   View
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import BackButton from '../components/BackButton';
+import TopNavbar from '../components/TopNavbar';
+import { Colors } from '../constants/colors';
 
 const hospitalsMock = [
   { id: 1, name: 'City Hospital', latitude: 8.5241, longitude: 76.9366, address: 'Medical College Rd, Thiruvananthapuram' },
@@ -150,40 +151,45 @@ const HospitalsNearby = () => {
 
   if (Platform.OS === 'web') {
     return (
-      <View style={styles.center}>
-        <BackButton />
-        <Text style={styles.errorText}>Map is not supported on web. Please use mobile device.</Text>
+      <View style={styles.container}>
+        <TopNavbar title="Hospitals Nearby" />
+        <View style={styles.center}>
+          <Text style={styles.errorText}>Map is not supported on web. Please use mobile device.</Text>
+        </View>
       </View>
     );
   }
 
   if (loading) {
     return (
-      <View style={styles.center}>
-        <BackButton />
-        <ActivityIndicator size="large" color="#2c5aa0" />
-        <Text style={styles.loadingText}>Getting your location...</Text>
+      <View style={styles.container}>
+        <TopNavbar title="Hospitals Nearby" />
+        <View style={styles.center}>
+          <ActivityIndicator size="large" color={Colors.darkBlue} />
+          <Text style={styles.loadingText}>Getting your location...</Text>
+        </View>
       </View>
     );
   }
 
   if (errorMsg && !location) {
     return (
-      <View style={styles.center}>
-        <BackButton />
-        <Text style={styles.errorText}>{errorMsg}</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={getCurrentLocation}>
-          <Text style={styles.retryText}>Retry</Text>
-        </TouchableOpacity>
+      <View style={styles.container}>
+        <TopNavbar title="Hospitals Nearby" />
+        <View style={styles.center}>
+          <Text style={styles.errorText}>{errorMsg}</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={getCurrentLocation}>
+            <Text style={styles.retryText}>Retry</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <BackButton />
+      <TopNavbar title="Hospitals Nearby" />
       
-      {/* Search Bar */}
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
         <TextInput
@@ -194,16 +200,12 @@ const HospitalsNearby = () => {
           placeholderTextColor="#999"
         />
         {searchQuery.length > 0 && (
-          <TouchableOpacity
-            onPress={() => setSearchQuery('')}
-            style={styles.clearButton}
-          >
+          <TouchableOpacity onPress={() => setSearchQuery('')} style={styles.clearButton}>
             <Ionicons name="close" size={20} color="#666" />
           </TouchableOpacity>
         )}
       </View>
 
-      {/* Map */}
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -233,15 +235,10 @@ const HospitalsNearby = () => {
         ))}
       </MapView>
 
-      {/* Current Location Button */}
-      <TouchableOpacity
-        style={styles.locationButton}
-        onPress={centerOnCurrentLocation}
-      >
+      <TouchableOpacity style={styles.locationButton} onPress={centerOnCurrentLocation}>
         <Ionicons name="locate" size={24} color="white" />
       </TouchableOpacity>
 
-      {/* Hospital List (when searching) */}
       {searchQuery.length > 0 && (
         <View style={styles.resultsContainer}>
           <ScrollView style={styles.resultsList}>
@@ -254,7 +251,7 @@ const HospitalsNearby = () => {
                   setSearchQuery('');
                 }}
               >
-                <Ionicons name="medical" size={20} color="#2c5aa0" />
+                <Ionicons name="medical" size={20} color={Colors.lightBlue} />
                 <View style={styles.hospitalInfo}>
                   <Text style={styles.hospitalName}>{hospital.name}</Text>
                   <Text style={styles.hospitalAddress}>{hospital.address}</Text>
@@ -280,6 +277,7 @@ const HospitalsNearby = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.lightGray,
   },
   map: {
     flex: 1,
@@ -290,123 +288,132 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: '#666',
-  },
-  errorText: {
-    fontSize: 16,
-    color: '#e74c3c',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  retryButton: {
-    backgroundColor: '#2c5aa0',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  retryText: {
-    color: 'white',
-    fontSize: 16,
-  },
   searchContainer: {
-    position: 'absolute',
-    top: 100,
-    left: 20,
-    right: 20,
-    backgroundColor: 'white',
-    borderRadius: 25,
+    margin: 20,
+    backgroundColor: Colors.white,
+    borderRadius: 30,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    zIndex: 1000,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    paddingHorizontal: 18,
+    paddingVertical: 8,
+    elevation: 8,
+    shadowColor: Colors.darkBlue,
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.bluishWhite,
   },
   searchIcon: {
     marginRight: 10,
   },
   searchInput: {
     flex: 1,
+    height: 40,
     fontSize: 16,
-    paddingVertical: 10,
+    color: Colors.darkGray,
   },
   clearButton: {
-    padding: 5,
+    padding: 8,
   },
   locationButton: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 20,
     right: 20,
-    backgroundColor: '#2c5aa0',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: Colors.darkBlue,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1000,
-    elevation: 5,
-    shadowColor: '#000',
+    elevation: 4,
+    shadowColor: Colors.darkBlue,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   resultsContainer: {
     position: 'absolute',
-    top: 150,
+    top: 80,
     left: 20,
     right: 20,
-    maxHeight: 200,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    zIndex: 999,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    maxHeight: 250,
+    backgroundColor: Colors.white,
+    borderRadius: 15,
+    elevation: 6,
+    shadowColor: Colors.darkBlue,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.bluishWhite,
   },
   resultsList: {
-    maxHeight: 200,
+    padding: 10,
   },
   hospitalItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    backgroundColor: Colors.bluishWhite,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 8,
+    elevation: 2,
+    shadowColor: Colors.darkBlue,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   hospitalInfo: {
-    marginLeft: 10,
     flex: 1,
+    marginLeft: 12,
   },
   hospitalName: {
     fontSize: 16,
+    color: Colors.darkGray,
     fontWeight: '600',
-    color: '#333',
   },
   hospitalAddress: {
     fontSize: 14,
-    color: '#666',
-    marginTop: 2,
+    color: Colors.gray,
+    marginTop: 4,
+  },
+  directionsButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: Colors.darkBlue,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    fontSize: 16,
+    color: Colors.red,
+    textAlign: 'center',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: Colors.darkGray,
+    marginTop: 10,
+  },
+  retryButton: {
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    backgroundColor: Colors.lightBlue,
+    alignItems: 'center',
+  },
+  retryText: {
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: '600',
   },
   noResults: {
     padding: 20,
     textAlign: 'center',
-    color: '#666',
+    color: Colors.gray,
     fontSize: 16,
-  },
-  directionsButton: {
-    backgroundColor: '#2c5aa0',
-    padding: 8,
-    borderRadius: 15,
-    marginLeft: 10,
   },
 });
 

@@ -1,15 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
-import BackButton from '../components/BackButton';
+import TopNavbar from '../components/TopNavbar';
+import { Colors } from '../constants/colors';
 
 // Mock data - replace with Supabase fetch later
 const mockRecords = [
@@ -52,12 +53,6 @@ const MedicalRecords = () => {
     try {
       setLoading(true);
       // TODO: Replace with actual Supabase fetch
-      // const { data, error } = await supabase
-      //   .from('medical_records')
-      //   .select('*')
-      //   .order('date', { ascending: false });
-      
-      // Simulate API delay
       setTimeout(() => {
         setRecords(mockRecords);
         setLoading(false);
@@ -98,25 +93,20 @@ const MedicalRecords = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <BackButton />
-        <ActivityIndicator size="large" color="#2c5aa0" />
-        <Text style={styles.loadingText}>Loading medical records...</Text>
+      <View style={styles.container}>
+        <TopNavbar title="Medical Records" />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={Colors.darkBlue} />
+          <Text style={styles.loadingText}>Loading medical records...</Text>
+        </View>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <BackButton />
+      <TopNavbar title="Medical Records" />
       
-      <View style={styles.header}>
-        <Text style={styles.title}>Medical Records</Text>
-        <TouchableOpacity onPress={fetchMedicalRecords}>
-          <Ionicons name="refresh" size={24} color="#2c5aa0" />
-        </TouchableOpacity>
-      </View>
-
       <View style={styles.filterContainer}>
         {['all', 'recent', 'pending'].map(filterType => (
           <TouchableOpacity
@@ -183,7 +173,7 @@ const MedicalRecords = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: Colors.lightGray,
   },
   loadingContainer: {
     flex: 1,
@@ -191,105 +181,101 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    marginTop: 10,
+    marginTop: 12,
     fontSize: 16,
-    color: '#666',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
-    backgroundColor: 'white',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2c5aa0',
+    color: Colors.gray,
+    fontWeight: '500',
   },
   filterContainer: {
     flexDirection: 'row',
     paddingHorizontal: 20,
-    paddingVertical: 15,
-    backgroundColor: 'white',
-    marginBottom: 10,
+    paddingVertical: 16,
+    backgroundColor: Colors.white,
+    marginBottom: 12,
   },
   filterButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 25,
+    marginRight: 12,
+    backgroundColor: Colors.bluishWhite,
+    borderWidth: 1,
+    borderColor: Colors.lightBlue + '30',
   },
   activeFilter: {
-    backgroundColor: '#2c5aa0',
+    backgroundColor: Colors.lightBlue,
   },
   filterText: {
-    color: '#666',
+    color: Colors.gray,
     fontSize: 14,
+    fontWeight: '500',
   },
   activeFilterText: {
-    color: 'white',
+    color: Colors.white,
+    fontWeight: '600',
   },
   recordsList: {
     flex: 1,
     paddingHorizontal: 20,
   },
   recordCard: {
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
+    backgroundColor: Colors.white,
+    borderRadius: 15,
+    padding: 18,
+    marginBottom: 12,
+    elevation: 4,
+    shadowColor: Colors.darkBlue,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: Colors.bluishWhite,
   },
   recordHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 12,
   },
   recordType: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: '700',
+    color: Colors.darkBlue,
   },
   statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 15,
+    elevation: 2,
   },
   statusText: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   recordDetails: {
-    gap: 5,
+    gap: 8,
   },
   recordRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
   },
   recordInfo: {
     fontSize: 14,
-    color: '#666',
+    color: Colors.gray,
+    fontWeight: '500',
   },
   emptyState: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 50,
+    paddingVertical: 60,
   },
   emptyText: {
     fontSize: 16,
-    color: '#999',
-    marginTop: 10,
+    color: Colors.gray,
+    marginTop: 12,
+    fontWeight: '500',
   },
 });
 

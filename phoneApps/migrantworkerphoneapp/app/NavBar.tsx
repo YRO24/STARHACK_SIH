@@ -2,6 +2,7 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { FlatList, Modal, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Colors } from './constants/colors';
 
 const notificationsData = [
   { id: '1', text: 'Welcome to the app!' },
@@ -20,9 +21,10 @@ const Navbar = () => {
         <TouchableOpacity
           style={styles.profileContainer}
           onPress={() => router.push('/profile')}
+          activeOpacity={0.8}
         >
           <View style={styles.profileImage}>
-            <AntDesign name="user" size={24} color="black" />
+            <AntDesign name="user" size={22} color={Colors.darkBlue} />
           </View>
         </TouchableOpacity>
 
@@ -31,7 +33,7 @@ const Navbar = () => {
           <Text style={styles.locationLabel}>Current Location</Text>
           <View style={styles.locationRow}>
             <Text style={styles.locationText}>Thiruvananthapuram</Text>
-            <Ionicons name="chevron-down" size={16} color="white" />
+            <Ionicons name="chevron-down" size={14} color={Colors.white} />
           </View>
         </View>
 
@@ -40,8 +42,9 @@ const Navbar = () => {
           <TouchableOpacity
             style={styles.iconButton}
             onPress={() => setShowNotifications(!showNotifications)}
+            activeOpacity={0.7}
           >
-            <Ionicons name="notifications-outline" size={20} color="white" />
+            <Ionicons name="notifications-outline" size={22} color={Colors.white} />
           </TouchableOpacity>
         </View>
       </View>
@@ -68,8 +71,9 @@ const Navbar = () => {
             <TouchableOpacity
               style={styles.closeButton}
               onPress={() => setShowNotifications(false)}
+              activeOpacity={0.8}
             >
-              <Text style={{ color: 'white' }}>Close</Text>
+              <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -80,90 +84,117 @@ const Navbar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#2c5aa0',
+    backgroundColor: Colors.darkBlue,
   },
   navbar: {
-    backgroundColor: '#2c5aa0',
+    backgroundColor: Colors.darkBlue,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    height: 60,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    height: 65,
   },
   profileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 12,
   },
   profileImage: {
-    width: 35,
-    height: 35,
-    borderRadius: 17.5,
-    backgroundColor: 'white',
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: Colors.bluishWhite,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 2,
+    shadowColor: Colors.darkBlue,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   locationInfo: {
     flex: 1,
     alignItems: 'center',
   },
   locationLabel: {
-    color: '#ebf2fa',
-    fontSize: 12,
+    color: Colors.bluishWhite,
+    fontSize: 11,
     opacity: 0.9,
+    fontWeight: '400',
   },
   locationRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 2,
   },
   locationText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '500',
-    marginRight: 4,
+    color: Colors.white,
+    fontSize: 15,
+    fontWeight: '600',
+    marginRight: 6,
   },
   rightContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 10,
+    marginLeft: 12,
   },
   iconButton: {
-    marginLeft: 15,
+    padding: 8,
+    borderRadius: 20,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(44,90,160,0.7)',
+    backgroundColor: `${Colors.darkBlue}80`,
     justifyContent: 'flex-end',
   },
   notificationsModal: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    minHeight: 200,
+    backgroundColor: Colors.white,
+    padding: 24,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    minHeight: 250,
+    elevation: 10,
+    shadowColor: Colors.darkBlue,
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
   notificationsTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#2c5aa0',
+    marginBottom: 16,
+    color: Colors.darkBlue,
+    textAlign: 'center',
   },
   notificationItem: {
-    paddingVertical: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 4,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: Colors.bluishWhite,
   },
   notificationText: {
     fontSize: 15,
-    color: '#333',
+    color: Colors.darkGray,
+    lineHeight: 20,
   },
   closeButton: {
-    marginTop: 15,
-    backgroundColor: '#2c5aa0',
-    padding: 10,
-    borderRadius: 8,
+    marginTop: 20,
+    backgroundColor: Colors.darkBlue,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 25,
     alignItems: 'center',
+    elevation: 4,
+    shadowColor: Colors.darkBlue,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  closeButtonText: {
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
