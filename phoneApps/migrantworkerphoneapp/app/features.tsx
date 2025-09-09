@@ -15,10 +15,23 @@ const Features = ({ onDocumentsPress, onAbhaPress }) => {
         <Ionicons name="medkit-outline" size={24} color="#2c5aa0" style={styles.icon} />
         <Text style={styles.text}>Hospitals Nearby</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.featureRow} onPress={onDocumentsPress}>
+      
+      <TouchableOpacity 
+        style={styles.featureRow} 
+        onPress={() => router.push('/featureScreens/medicalRecords')}
+      >
         <MaterialIcons name="folder-open" size={24} color="#2c5aa0" style={styles.icon} />
-        <Text style={styles.text}>View Documents</Text>
+        <Text style={styles.text}>Medical Records</Text>
       </TouchableOpacity>
+      
+      <TouchableOpacity 
+        style={styles.featureRow} 
+        onPress={() => router.push('/featureScreens/emergencyNumbers')}
+      >
+        <Ionicons name="call-outline" size={24} color="#2c5aa0" style={styles.icon} />
+        <Text style={styles.text}>Emergency Numbers</Text>
+      </TouchableOpacity>
+      
       <TouchableOpacity style={styles.featureRow} onPress={onAbhaPress}>
         <Ionicons name="id-card-outline" size={24} color="#2c5aa0" style={styles.icon} />
         <Text style={styles.text}>View ABHA ID</Text>

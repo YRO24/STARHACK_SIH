@@ -3,6 +3,8 @@ import * as Location from 'expo-location';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
+  Linking,
   Platform,
   ScrollView,
   StyleSheet,
@@ -90,6 +92,36 @@ const HospitalsNearby = () => {
         longitude: 76.9366,
       });
     }
+  };
+
+  const openInGoogleMaps = (hospital) => {
+    const url = Platform.select({
+      ios: `maps://app?daddr=${hospital.latitude},${hospital.longitude}`,
+      android: `google.navigation:q=${hospital.latitude},${hospital.longitude}`,
+    });
+
+    const webUrl = `https://www.google.com/maps/dir/?api=1&destination=${hospital.latitude},${hospital.longitude}`;
+
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        Linking.openURL(webUrl);
+      }
+    }).catch(() => {
+      Linking.openURL(webUrl);
+    });
+  };
+
+  const handleHospitalPress = (hospital) => {
+    Alert.alert(
+      hospital.name,
+      hospital.address,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Get Directions', onPress: () => openInGoogleMaps(hospital) },
+      ]
+    );
   };
 
   const centerOnCurrentLocation = () => {
@@ -196,6 +228,7 @@ const HospitalsNearby = () => {
             title={hospital.name}
             description={hospital.address}
             pinColor="#e74c3c"
+            onPress={() => handleHospitalPress(hospital)}
           />
         ))}
       </MapView>
@@ -216,13 +249,22 @@ const HospitalsNearby = () => {
               <TouchableOpacity
                 key={hospital.id}
                 style={styles.hospitalItem}
-                onPress={() => centerOnHospital(hospital)}
+                onPress={() => {
+                  centerOnHospital(hospital);
+                  setSearchQuery('');
+                }}
               >
                 <Ionicons name="medical" size={20} color="#2c5aa0" />
                 <View style={styles.hospitalInfo}>
                   <Text style={styles.hospitalName}>{hospital.name}</Text>
                   <Text style={styles.hospitalAddress}>{hospital.address}</Text>
                 </View>
+                <TouchableOpacity
+                  style={styles.directionsButton}
+                  onPress={() => openInGoogleMaps(hospital)}
+                >
+                  <Ionicons name="navigate" size={16} color="white" />
+                </TouchableOpacity>
               </TouchableOpacity>
             ))}
             {filteredHospitals.length === 0 && (
@@ -359,6 +401,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#666',
     fontSize: 16,
+  },
+  directionsButton: {
+    backgroundColor: '#2c5aa0',
+    padding: 8,
+    borderRadius: 15,
+    marginLeft: 10,
   },
 });
 
