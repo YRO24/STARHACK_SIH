@@ -1,15 +1,18 @@
-import { Text, View } from "react-native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import Features from './features';
+import Navbar from './NavBar';
 
-export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
-  );
-}
+const HomeScreen = () => (
+  <View style={{ flex: 1 }}>
+    <Navbar />
+    <Features
+      onDocumentsPress={() => {}}
+      onAbhaPress={() => {}}
+    />
+  </View>
+);
+
+export default HomeScreen;
+
+const styles = StyleSheet.create({});
