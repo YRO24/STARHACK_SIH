@@ -1,19 +1,21 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Alert,
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    Alert,
+    Modal,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import TopNavbar from './components/TopNavbar';
 import { Colors } from './constants/colors';
 
 const Profile = () => {
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editField, setEditField] = useState('');
@@ -181,6 +183,16 @@ const Profile = () => {
           <TouchableOpacity style={styles.actionButton} activeOpacity={0.8}>
             <Ionicons name="shield-checkmark-outline" size={22} color={Colors.lightBlue} />
             <Text style={styles.actionText}>Privacy Settings</Text>
+            <Ionicons name="chevron-forward" size={18} color={Colors.gray} />
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={styles.actionButton} 
+            activeOpacity={0.8}
+            onPress={() => router.push('./screens/LoginScreen')}
+          >
+            <Ionicons name="log-in-outline" size={22} color={Colors.lightBlue} />
+            <Text style={styles.actionText}>Login / Signup</Text>
             <Ionicons name="chevron-forward" size={18} color={Colors.gray} />
           </TouchableOpacity>
         </View>
